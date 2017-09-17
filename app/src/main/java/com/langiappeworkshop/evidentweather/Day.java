@@ -3,7 +3,7 @@ package com.langiappeworkshop.evidentweather;
 import android.support.annotation.NonNull;
 
 /**
- *  This class {@link Day} is used to hold data about books fetched from {@link Downloader}.
+ *  This class {@link Day} is used to hold daily weather data fetched from {@link Downloader}.
  */
 class Day {
 

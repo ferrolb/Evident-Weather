@@ -20,8 +20,8 @@ import java.util.List;
 
 
 /**
- *  This class {@link Downloader} is used to download the JSON data from the network and create and
- *  return a list of data days for each JSON object.  The main entry point is {@link #fetchDays()}
+ *  This class {@link Downloader} is used to download the JSON weather data from the network and create and
+ *  return a list of daily weather conditions.  The main entry point is {@link #fetchDays()}
  */
 class Downloader {
 
@@ -91,14 +91,13 @@ class Downloader {
     }
 
     /**
-     * Fetches JSON of books list and returns as a list of days.
+     * Fetches JSON of daily weather and returns as a list of days.
      *
      * @return List of day {@link Day} or empty list, if error
      */
     @NonNull
     List<Day> fetchDays() {
         List<Day> days = new ArrayList<>();
-        //String jsonString = getString("http://de-coding-test.s3.amazonaws.com/books.json");
         String jsonString = getString("http://api.wunderground.com/api/d471ef2674c79e20/forecast10day/q/US/GA/Atlanta.json");
         try {
             parseDays(days, jsonString);
@@ -113,7 +112,7 @@ class Downloader {
     /**
      * Parses JSON of days list and a fills a list of day {@link Day}.
      *
-     * @param  days  empty list of book {@link Day} that will be filled on return.
+     * @param  days  empty list of daily weather {@link Day} that will be filled on return.
      * @param  jsonString String contianing the JSON to be parsed.
      */
     private void parseDays(@NonNull List<Day> days, @NonNull String jsonString) throws IOException, JSONException {
@@ -121,14 +120,12 @@ class Downloader {
             return;
         }
 
-        Log.i("Downloader", "JSON:" + jsonString);
-
         JSONArray jsonArray = new JSONObject(jsonString).getJSONObject("forecast").getJSONObject("simpleforecast").getJSONArray("forecastday");
 
         for (int i = 0; i < jsonArray.length(); ++i) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-
+            // Fill Date ========
             String strDate = "";
             if (!jsonObject.isNull("date")) {
                 JSONObject dateObject = jsonObject.getJSONObject("date");
@@ -142,19 +139,30 @@ class Downloader {
                 }
             }
 
+            // Fill Summary ========
             String summary = jsonObject.isNull("conditions") ? "" : jsonObject.getString("conditions");
+
+            // Fill Precip ========
             String precip = jsonObject.isNull("pop") ? "Precip:" : "Precip: "+jsonObject.getInt("pop")+"%";
             String lo = "Lo:";
+
+            // Fill Lo ========
             if (!jsonObject.isNull("low")) {
                 JSONObject lowJSON = jsonObject.getJSONObject("low");
                 lo = lowJSON.isNull("fahrenheit") ? "Lo:" : "Lo: " + lowJSON.getInt("fahrenheit") + "\u00b0";
             }
             String hi = "Hi:";
+
+            // Fill Hi ========
             if (!jsonObject.isNull("high")) {
                 JSONObject highJSON = jsonObject.getJSONObject("high");
                 hi = highJSON.isNull("fahrenheit") ? "Hi:" : "Hi: " + highJSON.getInt("fahrenheit") + "\u00b0";
             }
+
+            // Fill Humid ========
             String humid = jsonObject.isNull("avehumidity") ? "Humid:" : "Humid: "+jsonObject.getInt("avehumidity")+"%";
+
+            // Fill Wind ========
             String wind = "Wind:";
             if (!jsonObject.isNull("avewind")) {
                 if (!jsonObject.getJSONObject("avewind").isNull("mph")  && !jsonObject.getJSONObject("avewind").isNull("dir") ) {
@@ -162,10 +170,13 @@ class Downloader {
                 }
             }
 
+            // Fill imageURL ========
             String imageURL = jsonObject.isNull("icon_url") ? "" : jsonObject.getString("icon_url");
 
+            // create Day object
             Day day = new Day(R.mipmap.ic_launcher, imageURL, strDate, summary, precip, lo, hi, humid, wind);
 
+            // add Day to list
             days.add(day);
         }
     }

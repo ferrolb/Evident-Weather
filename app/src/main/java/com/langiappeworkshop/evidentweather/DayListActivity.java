@@ -4,6 +4,9 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
+/**
+ *  This class {@link DayListActivity} is just a placeholder for our main fragment {@link DayListFragment}.
+ */
 public class DayListActivity extends FragmentActivity {
 
     @Override

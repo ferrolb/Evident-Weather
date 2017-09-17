@@ -21,13 +21,14 @@ import java.util.List;
 
 /**
  *  This class {@link DayListFragment} is our main fragment and does most of the work of
- *  our app.
+ *  our app, including loading and displaying the data.
  */
 public class DayListFragment extends Fragment {
 
-    // Our day list is loaded into a RecyclerView
+    // Our daily weather is loaded into a RecyclerView
     private RecyclerView mDayRecyclerView;
-    // local copy of our day list data
+
+    // local copy of our daily weather data
     private List<Day> mDayList = new ArrayList<>();
 
     @Override
@@ -72,7 +73,7 @@ public class DayListFragment extends Fragment {
     private class RVAdapter extends RecyclerView.Adapter<RVAdapter.DayViewHolder> {
         private Context mContext;
 
-        // reference to our data
+        // reference to our weather data
         List<Day> dayList;
 
         private RVAdapter(Context mContext, List<Day> dayList) {
@@ -94,7 +95,7 @@ public class DayListFragment extends Fragment {
             if (!TextUtils.isEmpty(day.imageURL)) {
 
                 // we are using Picasso library to load individual images because
-                // that's what it's made for.
+                // that's what it's made for!
                 Picasso.with(getActivity())
                         .load(day.imageURL)
                         .placeholder(day.imageResourceId)
@@ -119,7 +120,7 @@ public class DayListFragment extends Fragment {
         }
 
         /**
-         *  Our ViewHolder for view items associated with our Days.
+         *  Our ViewHolder for view items associated with our 10 days of weather.
          */
         class DayViewHolder extends RecyclerView.ViewHolder {
             private ImageView ivIcon;
@@ -148,7 +149,7 @@ public class DayListFragment extends Fragment {
 
     /**
      *  This class {@link DownloadDaysTask} takes our networking work off the main thread.
-     *  It returns a list of book {@link Day} and sets up the RecyclerView on completion.
+     *  It returns a list of daily weather conditions {@link Day} and sets up the RecyclerView on completion.
      */
     private class DownloadDaysTask extends AsyncTask<Void, Void, List<Day>> {
 
