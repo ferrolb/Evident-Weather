@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:gravity="center"
     android:background="@drawable/background_rounded"
     android:padding="10dp">
 
@@ -14,7 +15,7 @@
         android:src="@mipmap/ic_launcher" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:gravity="center_vertical"
@@ -27,7 +28,8 @@
             android:text="Monday, 9/17/2017"
             android:textAlignment="center"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/colorTxtLightBlue"/>
 
         <TextView
             android:id="@+id/tvSummary"
@@ -41,91 +43,97 @@
             android:text="Partly Cloudy Partly Cloudy Partly Cloudy Partly Cloudy Partly Cloudy"
             android:textAlignment="center"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/colorTxtLightBlue"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:orientation="horizontal">
-            <!--<View-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="1dp"-->
-                <!--android:layout_weight="1"/>-->
 
-            <TextView
-                android:id="@+id/tvPrecip"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Precip: 20%"
-                android:textAllCaps="false"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:gravity="left"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tvPrecip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Precip: 20%"
+                    android:textAllCaps="false"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorTxtLightBlue"/>
+
+                <TextView
+                    android:id="@+id/tvHumid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Humid: 20%"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorTxtLightBlue"/>
+            </LinearLayout>
+
             <View
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1"/>
 
-            <TextView
-                android:id="@+id/tvLo"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lo: 45"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:gravity="left"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvLo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lo: 45"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorTxtLightBlue"/>
+
+                <TextView
+                    android:id="@+id/tvWind"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Wind: 15 NE"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorTxtLightBlue"/>
+            </LinearLayout>
+
             <View
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1"/>
 
-            <TextView
-                android:id="@+id/tvHi"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hi: 76"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-            <!--<View-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="1dp"-->
-                <!--android:layout_weight="1"/>-->
+                android:gravity="left"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvHi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hi: 76"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorTxtLightBlue"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"/>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-            <!--<View-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="1dp"-->
-                <!--android:layout_weight="1"/>-->
-
-            <TextView
-                android:id="@+id/tvHumid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Humid: 20%"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1"/>
-
-            <TextView
-                android:id="@+id/tvWind"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Wind: 15 NE"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1"/>
-
-        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -25,9 +25,8 @@
         android:id="@+id/daylist_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:layout="@layout/fragment_day_list">
     </fragment>
 
 

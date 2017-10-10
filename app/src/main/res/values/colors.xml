@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorBGBlue">#4099ff</color>
     <color name="colorBGGrey">#FFD3D7D6</color>
+    <color name="colorTxtLightBlue">#FFBFDBFC</color>
 </resources>

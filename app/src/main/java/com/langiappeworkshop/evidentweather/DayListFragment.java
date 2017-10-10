@@ -56,14 +56,15 @@ public class DayListFragment extends Fragment {
             // start our data download task, if our list is empty
             new DownloadDaysTask().execute();
         }
+
         return rootView;
     }
-
 
     private void setupRecyclerView() {
         // check if fragment has been added to Activity before we setup the RecyclerView
         if (isAdded()) {
-            mDayRecyclerView.setAdapter(new RVAdapter(getActivity(), mDayList));
+            RVAdapter rvAdapter = new RVAdapter(getActivity(), mDayList);
+            mDayRecyclerView.setAdapter(rvAdapter);
         }
     }
 
