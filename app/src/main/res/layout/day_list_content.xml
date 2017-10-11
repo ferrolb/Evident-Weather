@@ -38,7 +38,7 @@
             android:ellipsize="marquee"
             android:focusable="false"
             android:marqueeRepeatLimit="marquee_forever"
-            android:maxLines="1"
+            android:singleLine="true"
             android:scrollHorizontally="true"
             android:text="Partly Cloudy Partly Cloudy Partly Cloudy Partly Cloudy Partly Cloudy"
             android:textAlignment="center"
