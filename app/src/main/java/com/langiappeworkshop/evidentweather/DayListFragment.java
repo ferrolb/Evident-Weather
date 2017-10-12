@@ -8,16 +8,27 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.langiappeworkshop.evidentweather.data.ApiUtils;
+import com.langiappeworkshop.evidentweather.data.ForecastResponse;
+import com.langiappeworkshop.evidentweather.data.Forecastday_;
+import com.langiappeworkshop.evidentweather.data.RetroFitInterface;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  *  This class {@link DayListFragment} is our main fragment and does most of the work of
@@ -54,8 +65,12 @@ public class DayListFragment extends Fragment {
             setupRecyclerView();
         } else {
             // start our data download task, if our list is empty
-            new DownloadDaysTask().execute();
+            //new DownloadDaysTask().execute();
+
+            loadForecastDays();
         }
+
+        //loadForecastDays();
 
         return rootView;
     }
@@ -164,6 +179,39 @@ public class DayListFragment extends Fragment {
             mDayList = days;
             setupRecyclerView();
         }
+    }
+
+
+
+    private RetroFitInterface mService;
+    public void loadForecastDays() {
+        mService = ApiUtils.getRetroFitInterface();
+        mService.getBody().enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()) {
+                    String string = "";
+                    try {
+//                        /*List<Forecastday_> dayList = */response.body();//.getForecast().getSimpleforecast().getForecastday();
+                        string = response.body().string();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    //mAdapter.updateAnswers(response.body().getItems());
+                    Log.d("DayListFragment", "posts loaded from API");
+                }else {
+                    int statusCode  = response.code();
+                    // handle request errors depending on status code
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                //showErrorMessage();
+                Log.d("DayListFragment", "error loading from API");
+            }
+
+        });
     }
 
 }
