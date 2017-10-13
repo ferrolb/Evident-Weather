@@ -2,7 +2,6 @@ package com.langiappeworkshop.evidentweather.data;
 
 import com.squareup.moshi.Json;
 
-import retrofit2.Response;
 
 public class ForecastResponse {
 

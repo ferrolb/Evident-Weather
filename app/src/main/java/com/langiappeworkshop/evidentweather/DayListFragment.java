@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.langiappeworkshop.evidentweather.data.ApiUtils;
+import com.langiappeworkshop.evidentweather.data.Forecast;
 import com.langiappeworkshop.evidentweather.data.ForecastResponse;
 import com.langiappeworkshop.evidentweather.data.Forecastday_;
 import com.langiappeworkshop.evidentweather.data.RetroFitInterface;
@@ -186,19 +187,21 @@ public class DayListFragment extends Fragment {
     private RetroFitInterface mService;
     public void loadForecastDays() {
         mService = ApiUtils.getRetroFitInterface();
-        mService.getBody().enqueue(new Callback<ResponseBody>() {
+//        mService.getBody().enqueue(new Callback<ResponseBody>() {
+        mService.getForecastResponse().enqueue(new Callback<ForecastResponse>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<ForecastResponse> call, Response<ForecastResponse> response) {
                 if(response.isSuccessful()) {
                     String string = "";
                     try {
 //                        /*List<Forecastday_> dayList = */response.body();//.getForecast().getSimpleforecast().getForecastday();
-                        string = response.body().string();
+                        Forecast fc = response.body().getForecast();
+                        Log.d("DayListFragment", "posts loaded from API");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     //mAdapter.updateAnswers(response.body().getItems());
-                    Log.d("DayListFragment", "posts loaded from API");
+
                 }else {
                     int statusCode  = response.code();
                     // handle request errors depending on status code
@@ -206,7 +209,7 @@ public class DayListFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<ForecastResponse> call, Throwable t) {
                 //showErrorMessage();
                 Log.d("DayListFragment", "error loading from API");
             }
