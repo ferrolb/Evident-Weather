@@ -22,6 +22,8 @@ import com.langiappeworkshop.evidentweather.data.Forecastday_;
 import com.langiappeworkshop.evidentweather.data.RetroFitInterface;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -124,13 +126,50 @@ public class DayListFragment extends Fragment {
                 holder.ivIcon.setImageResource(R.mipmap.ic_launcher);
             }
 
-            holder.tvSummary.setText(day.getConditions());
-            holder.tvDate.setText(day.getDate().toString());
-            holder.tvPrecip.setText(day.getPop().toString());
-            holder.tvLo.setText(day.getLow().getFahrenheit());
-            holder.tvHi.setText(day.getHigh().getFahrenheit());
-            holder.tvHumid.setText(day.getAvehumidity().toString());
-            holder.tvWind.setText(day.getAvewind().toString());
+            holder.tvSummary.setText(day.getConditions()==null?"":day.getConditions());
+
+            // Format Date
+            String strDate = "";
+            String month = day.getDate().getMonth()==null ? "" : ""+day.getDate().getMonth().intValue();
+            String strDay = day.getDate().getDay()==null ? "" : ""+day.getDate().getDay().intValue();
+            String year = day.getDate().getYear()==null ? "" : ""+day.getDate().getYear().intValue();
+            String weekday = day.getDate().getWeekday()==null ? "" : day.getDate().getWeekday();
+            if (!TextUtils.isEmpty(month) && !TextUtils.isEmpty(strDay) && !TextUtils.isEmpty(year)) {
+                strDate = weekday +"  "+ month + "/" + strDay + "/" + year;
+            }
+            holder.tvDate.setText(strDate);
+
+            // Format Precip
+            String precip = day.getPop()==null ? "Precip:" : "Precip: "+day.getPop().intValue()+"%";
+            holder.tvPrecip.setText(precip);
+
+            // Format Lo
+            String lo = "Lo:";
+            if (day.getLow() != null) {
+                lo = day.getLow().getFahrenheit()==null ? "Lo:" : "Lo: " + day.getLow().getFahrenheit() + "\u00b0";
+            }
+            holder.tvLo.setText(lo);
+
+            // Format Hi
+            String hi = "Hi:";
+            if (day.getHigh() != null) {
+                hi = day.getHigh().getFahrenheit()==null ? "Hi:" : "Hi: " + day.getHigh().getFahrenheit() + "\u00b0";
+            }
+            holder.tvHi.setText(hi);
+
+            // Format Humid
+            String humid = day.getAvehumidity()==null ? "Humid:" : "Humid: "+day.getAvehumidity()+"%";
+            holder.tvHumid.setText(humid);
+
+            // Format Wind
+            String wind = "Wind:";
+            if (day.getAvewind() != null) {
+                if (day.getAvewind().getMph()!=null  && day.getAvewind().getDir()!=null) {
+                    wind = "Wind: " + day.getAvewind().getMph().intValue() + " " + day.getAvewind().getDir();
+                }
+            }
+
+            holder.tvWind.setText(wind);
         }
 
         @Override
