@@ -22,20 +22,6 @@ public class Forecastday_ {
     private String skyicon;
     @Json(name = "pop")
     private Integer pop;
-//    @Json(name = "qpf_allday")
-//    private QpfAllday qpfAllday;
-//    @Json(name = "qpf_day")
-//    private QpfDay qpfDay;
-//    @Json(name = "qpf_night")
-//    private QpfNight qpfNight;
-//    @Json(name = "snow_allday")
-//    private SnowAllday snowAllday;
-//    @Json(name = "snow_day")
-//    private SnowDay snowDay;
-//    @Json(name = "snow_night")
-//    private SnowNight snowNight;
-//    @Json(name = "maxwind")
-//    private Maxwind maxwind;
     @Json(name = "avewind")
     private Avewind avewind;
     @Json(name = "avehumidity")
@@ -116,62 +102,6 @@ public class Forecastday_ {
     public void setPop(Integer pop) {
         this.pop = pop;
     }
-
-//    public QpfAllday getQpfAllday() {
-//        return qpfAllday;
-//    }
-//
-//    public void setQpfAllday(QpfAllday qpfAllday) {
-//        this.qpfAllday = qpfAllday;
-//    }
-//
-//    public QpfDay getQpfDay() {
-//        return qpfDay;
-//    }
-//
-//    public void setQpfDay(QpfDay qpfDay) {
-//        this.qpfDay = qpfDay;
-//    }
-//
-//    public QpfNight getQpfNight() {
-//        return qpfNight;
-//    }
-//
-//    public void setQpfNight(QpfNight qpfNight) {
-//        this.qpfNight = qpfNight;
-//    }
-//
-//    public SnowAllday getSnowAllday() {
-//        return snowAllday;
-//    }
-//
-//    public void setSnowAllday(SnowAllday snowAllday) {
-//        this.snowAllday = snowAllday;
-//    }
-//
-//    public SnowDay getSnowDay() {
-//        return snowDay;
-//    }
-//
-//    public void setSnowDay(SnowDay snowDay) {
-//        this.snowDay = snowDay;
-//    }
-//
-//    public SnowNight getSnowNight() {
-//        return snowNight;
-//    }
-//
-//    public void setSnowNight(SnowNight snowNight) {
-//        this.snowNight = snowNight;
-//    }
-//
-//    public Maxwind getMaxwind() {
-//        return maxwind;
-//    }
-//
-//    public void setMaxwind(Maxwind maxwind) {
-//        this.maxwind = maxwind;
-//    }
 
     public Avewind getAvewind() {
         return avewind;

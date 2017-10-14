@@ -2,8 +2,8 @@ package com.langiappeworkshop.evidentweather;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,19 +16,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.langiappeworkshop.evidentweather.data.ApiUtils;
-import com.langiappeworkshop.evidentweather.data.Forecast;
 import com.langiappeworkshop.evidentweather.data.ForecastResponse;
 import com.langiappeworkshop.evidentweather.data.Forecastday_;
 import com.langiappeworkshop.evidentweather.data.RetroFitInterface;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,7 +38,6 @@ public class DayListFragment extends Fragment {
     private RecyclerView mDayRecyclerView;
 
     // local copy of our daily weather data
-    //private List<Day> mDayList = new ArrayList<>();
     private List<Forecastday_> mForecastDayList = new ArrayList<>();
 
     @Override
@@ -69,12 +63,8 @@ public class DayListFragment extends Fragment {
             setupRecyclerView();
         } else {
             // start our data download task, if our list is empty
-            //new DownloadDaysTask().execute();
-
             loadForecastDays();
         }
-
-        //loadForecastDays();
 
         return rootView;
     }
@@ -94,9 +84,9 @@ public class DayListFragment extends Fragment {
         private Context mContext;
 
         // reference to our weather data
-        List</*Day*/Forecastday_> dayList;
+        List<Forecastday_> dayList;
 
-        private RVAdapter(Context mContext, List</*Day*/Forecastday_> dayList) {
+        private RVAdapter(Context mContext, List<Forecastday_> dayList) {
             this.mContext = mContext;
             this.dayList = dayList;
         }
@@ -111,7 +101,6 @@ public class DayListFragment extends Fragment {
         @Override
         public void onBindViewHolder(DayViewHolder holder, int i) {
 
-            //final Day day = dayList.get(i);
             final Forecastday_ day = dayList.get(i);
             if (!TextUtils.isEmpty(day.getIconUrl()/*.imageURL*/)) {
 
@@ -130,9 +119,9 @@ public class DayListFragment extends Fragment {
 
             // Format Date
             String strDate = "";
-            String month = day.getDate().getMonth()==null ? "" : ""+day.getDate().getMonth().intValue();
-            String strDay = day.getDate().getDay()==null ? "" : ""+day.getDate().getDay().intValue();
-            String year = day.getDate().getYear()==null ? "" : ""+day.getDate().getYear().intValue();
+            String month = day.getDate().getMonth()==null ? "" : ""+ day.getDate().getMonth();
+            String strDay = day.getDate().getDay()==null ? "" : ""+ day.getDate().getDay();
+            String year = day.getDate().getYear()==null ? "" : ""+ day.getDate().getYear();
             String weekday = day.getDate().getWeekday()==null ? "" : day.getDate().getWeekday();
             if (!TextUtils.isEmpty(month) && !TextUtils.isEmpty(strDay) && !TextUtils.isEmpty(year)) {
                 strDate = weekday +"  "+ month + "/" + strDay + "/" + year;
@@ -140,7 +129,7 @@ public class DayListFragment extends Fragment {
             holder.tvDate.setText(strDate);
 
             // Format Precip
-            String precip = day.getPop()==null ? "Precip:" : "Precip: "+day.getPop().intValue()+"%";
+            String precip = day.getPop()==null ? "Precip:" : "Precip: "+ day.getPop() +"%";
             holder.tvPrecip.setText(precip);
 
             // Format Lo
@@ -165,7 +154,7 @@ public class DayListFragment extends Fragment {
             String wind = "Wind:";
             if (day.getAvewind() != null) {
                 if (day.getAvewind().getMph()!=null  && day.getAvewind().getDir()!=null) {
-                    wind = "Wind: " + day.getAvewind().getMph().intValue() + " " + day.getAvewind().getDir();
+                    wind = "Wind: " + day.getAvewind().getMph() + " " + day.getAvewind().getDir();
                 }
             }
 
@@ -204,56 +193,32 @@ public class DayListFragment extends Fragment {
         }
     }
 
-
-//    /**
-//     *  This class {@link DownloadDaysTask} takes our networking work off the main thread.
-//     *  It returns a list of daily weather conditions {@link Day} and sets up the RecyclerView on completion.
-//     */
-//    private class DownloadDaysTask extends AsyncTask<Void, Void, List<Day>> {
-//
-//        @Override
-//        protected List<Day> doInBackground(Void... voids) {
-//            return new Downloader().fetchDays();
-//        }
-//
-//        @Override
-//        protected void onPostExecute(List<Day> days) {
-//            mDayList = days;
-//            setupRecyclerView();
-//        }
-//    }
-
-
-
-    private RetroFitInterface mService;
     public void loadForecastDays() {
-        mService = ApiUtils.getRetroFitInterface();
-//        mService.getBody().enqueue(new Callback<ResponseBody>() {
-        mService.getForecastResponse().enqueue(new Callback<ForecastResponse>() {
+        RetroFitInterface service = ApiUtils.getRetroFitInterface();
+        service.getForecastResponse().enqueue(new Callback<ForecastResponse>() {
             @Override
-            public void onResponse(Call<ForecastResponse> call, Response<ForecastResponse> response) {
+            public void onResponse(@NonNull Call<ForecastResponse> call, @NonNull Response<ForecastResponse> response) {
                 if(response.isSuccessful()) {
-                    String string = "";
                     try {
-//                        /*List<Forecastday_> dayList = */response.body();//.getForecast().getSimpleforecast().getForecastday();
-                        Forecast fc = response.body().getForecast();
-                        Log.d("DayListFragment", "posts loaded from API");
-                        mForecastDayList = response.body().getForecast().getSimpleforecast().getForecastday();
-                        setupRecyclerView();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    //mAdapter.updateAnswers(response.body().getItems());
+                        ForecastResponse forecastResponse = response.body();
+                        if (forecastResponse!=null) {
+                            mForecastDayList = forecastResponse.getForecast().getSimpleforecast().getForecastday();
+                            Log.i("DayListFragment", "Parsing data successful");
+                            setupRecyclerView();
+                        }
 
-                }else {
+                    } catch (Exception e) {
+                        Log.d("DayListFragment", e.getMessage());
+                    }
+
+                } else {
                     int statusCode  = response.code();
-                    // handle request errors depending on status code
+                    Log.d("DayListFragment", ""+statusCode);
                 }
             }
 
             @Override
-            public void onFailure(Call<ForecastResponse> call, Throwable t) {
-                //showErrorMessage();
+            public void onFailure(@NonNull Call<ForecastResponse> call, @NonNull Throwable t) {
                 Log.d("DayListFragment", "error loading from API");
             }
 

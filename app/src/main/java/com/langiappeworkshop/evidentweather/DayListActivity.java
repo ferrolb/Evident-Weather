@@ -16,7 +16,5 @@ public class DayListActivity extends FragmentActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(getTitle());
-
     }
-
 }

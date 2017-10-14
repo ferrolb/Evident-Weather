@@ -8,8 +8,6 @@ public class Response {
     private String version;
     @Json(name = "termsofService")
     private String termsofService;
-//    @Json(name = "features")
-//    private Features features;
 
     public String getVersion() {
         return version;
@@ -26,13 +24,5 @@ public class Response {
     public void setTermsofService(String termsofService) {
         this.termsofService = termsofService;
     }
-
-//    public Features getFeatures() {
-//        return features;
-//    }
-//
-//    public void setFeatures(Features features) {
-//        this.features = features;
-//    }
 
 }
