@@ -41,7 +41,8 @@ public class DayListFragment extends Fragment {
     private RecyclerView mDayRecyclerView;
 
     // local copy of our daily weather data
-    private List<Day> mDayList = new ArrayList<>();
+    //private List<Day> mDayList = new ArrayList<>();
+    private List<Forecastday_> mForecastDayList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,7 @@ public class DayListFragment extends Fragment {
         assert mDayRecyclerView != null;
         mDayRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        if (!mDayList.isEmpty()) {
+        if (!mForecastDayList.isEmpty()) {
             setupRecyclerView();
         } else {
             // start our data download task, if our list is empty
@@ -79,7 +80,7 @@ public class DayListFragment extends Fragment {
     private void setupRecyclerView() {
         // check if fragment has been added to Activity before we setup the RecyclerView
         if (isAdded()) {
-            RVAdapter rvAdapter = new RVAdapter(getActivity(), mDayList);
+            RVAdapter rvAdapter = new RVAdapter(getActivity(), mForecastDayList);
             mDayRecyclerView.setAdapter(rvAdapter);
         }
     }
@@ -91,9 +92,9 @@ public class DayListFragment extends Fragment {
         private Context mContext;
 
         // reference to our weather data
-        List<Day> dayList;
+        List</*Day*/Forecastday_> dayList;
 
-        private RVAdapter(Context mContext, List<Day> dayList) {
+        private RVAdapter(Context mContext, List</*Day*/Forecastday_> dayList) {
             this.mContext = mContext;
             this.dayList = dayList;
         }
@@ -108,27 +109,28 @@ public class DayListFragment extends Fragment {
         @Override
         public void onBindViewHolder(DayViewHolder holder, int i) {
 
-            final Day day = dayList.get(i);
-            if (!TextUtils.isEmpty(day.imageURL)) {
+            //final Day day = dayList.get(i);
+            final Forecastday_ day = dayList.get(i);
+            if (!TextUtils.isEmpty(day.getIconUrl()/*.imageURL*/)) {
 
                 // we are using Picasso library to load individual images because
                 // that's what it's made for!
                 Picasso.with(getActivity())
-                        .load(day.imageURL)
-                        .placeholder(day.imageResourceId)
+                        .load(day.getIconUrl())
+                        .placeholder(R.mipmap.ic_launcher)
                         .into(holder.ivIcon);
             } else {
                 // if we get an empty image URL, just default to Andy
-                holder.ivIcon.setImageResource(dayList.get(i).imageResourceId);
+                holder.ivIcon.setImageResource(R.mipmap.ic_launcher);
             }
 
-            holder.tvSummary.setText(day.summary);
-            holder.tvDate.setText(day.date);
-            holder.tvPrecip.setText(day.precip);
-            holder.tvLo.setText(day.lo);
-            holder.tvHi.setText(day.hi);
-            holder.tvHumid.setText(day.humid);
-            holder.tvWind.setText(day.wind);
+            holder.tvSummary.setText(day.getConditions());
+            holder.tvDate.setText(day.getDate().toString());
+            holder.tvPrecip.setText(day.getPop().toString());
+            holder.tvLo.setText(day.getLow().getFahrenheit());
+            holder.tvHi.setText(day.getHigh().getFahrenheit());
+            holder.tvHumid.setText(day.getAvehumidity().toString());
+            holder.tvWind.setText(day.getAvewind().toString());
         }
 
         @Override
@@ -164,23 +166,23 @@ public class DayListFragment extends Fragment {
     }
 
 
-    /**
-     *  This class {@link DownloadDaysTask} takes our networking work off the main thread.
-     *  It returns a list of daily weather conditions {@link Day} and sets up the RecyclerView on completion.
-     */
-    private class DownloadDaysTask extends AsyncTask<Void, Void, List<Day>> {
-
-        @Override
-        protected List<Day> doInBackground(Void... voids) {
-            return new Downloader().fetchDays();
-        }
-
-        @Override
-        protected void onPostExecute(List<Day> days) {
-            mDayList = days;
-            setupRecyclerView();
-        }
-    }
+//    /**
+//     *  This class {@link DownloadDaysTask} takes our networking work off the main thread.
+//     *  It returns a list of daily weather conditions {@link Day} and sets up the RecyclerView on completion.
+//     */
+//    private class DownloadDaysTask extends AsyncTask<Void, Void, List<Day>> {
+//
+//        @Override
+//        protected List<Day> doInBackground(Void... voids) {
+//            return new Downloader().fetchDays();
+//        }
+//
+//        @Override
+//        protected void onPostExecute(List<Day> days) {
+//            mDayList = days;
+//            setupRecyclerView();
+//        }
+//    }
 
 
 
@@ -197,6 +199,8 @@ public class DayListFragment extends Fragment {
 //                        /*List<Forecastday_> dayList = */response.body();//.getForecast().getSimpleforecast().getForecastday();
                         Forecast fc = response.body().getForecast();
                         Log.d("DayListFragment", "posts loaded from API");
+                        mForecastDayList = response.body().getForecast().getSimpleforecast().getForecastday();
+                        setupRecyclerView();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
